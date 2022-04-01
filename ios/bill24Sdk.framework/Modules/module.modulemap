@@ -1,0 +1,11 @@
+framework module bill24Sdk {
+  umbrella header "bill24Sdk.h"
+
+  export *
+  module * { export * }
+}
+
+module bill24Sdk.Swift {
+    header "bill24Sdk-Swift.h"
+    requires objc
+}
