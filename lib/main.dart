@@ -12,22 +12,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -37,16 +26,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -111,7 +90,6 @@ class _MyHomePageState extends State<MyHomePage> {
     };
     final response = await http.post(Uri.parse(url + "/order/create/v1"),
         body: json.encoder.convert(payload), headers: mainheader);
-    print(json.decode(response.body));
     return json.decode(response.body);
   }
 
@@ -136,39 +114,32 @@ class _MyHomePageState extends State<MyHomePage> {
           if (value.isNotEmpty) {
             var tranData;
             if(Platform.isAndroid) {
-              print((json.decode(value))[0]["tran_data"]);
               tranData = (json.decode(value))[0]["tran_data"];
             }
             else{
               tranData = value["tran_data"];
             }
-
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PaymentSucceeded(
-                        tranData["order_ref"].toString(),
-                        tranData["bank_name_en"].toString(),
-                        tranData["bank_ref"].toString(),
-                        tranData["trans_id"].toString(),
-                        tranData["status"].toString())));
+            if (tranData["status"].toString() == "0") {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PaymentSucceeded(
+                          tranData["order_ref"].toString(),
+                          tranData["bank_name_en"].toString(),
+                          tranData["bank_ref"].toString(),
+                          tranData["trans_id"].toString(),
+                          tranData["status"].toString())));
+            }
+            else{
+              // do your stuff here when payment is failed
+              print("There was a problem during payment.");
+            }
           }
         } else {
           return;
         }
       });
 
-      const sample_response = """
-      ["tran_data": {
-      "bank_name_en" = ACLEDA;
-      "bank_name_kh" = "\U17a2\U17c1\U179f\U17ca\U17b8\U179b\U17b8\U178a\U17b6";
-      "bank_ref" = FT220840WCB4789H;
-      "order_ref" = "Optional(123124)";
-      status = 0;
-      "trans_id" = 9wzcLMPS;
-      }, "payment_success_url": /payment/success]
-      """;
     } catch (e) {
       print(e);
     }
