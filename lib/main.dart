@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  static const platform = const MethodChannel('bill24Sdk');
+  static const platform = const MethodChannel('paymentSdk');
   TextEditingController orderRefController = new TextEditingController();
   var language = "en";
   var switchValue = false;
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "language": "km",
     "order_items": [
     {
-    "item_ref": "001",
+    "consumer_code": "001",
     "amount": 10
     }
     ],
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
             arguments.add(language);
           }
           value = await platform.invokeMethod(
-              "bill24Sdk", arguments);
+              "paymentSdk", arguments);
           if (value.isNotEmpty) {
             var tranData;
             if(Platform.isAndroid) {

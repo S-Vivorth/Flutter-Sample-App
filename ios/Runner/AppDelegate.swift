@@ -24,11 +24,10 @@ import Alamofire
   ) -> Bool {
       
       let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
-      let channel = FlutterMethodChannel(name: "bill24Sdk",binaryMessenger: controller.binaryMessenger)
+      let channel = FlutterMethodChannel(name: "paymentSdk",binaryMessenger: controller.binaryMessenger)
       channel.setMethodCallHandler({
           [weak self] (call: FlutterMethodCall, results: @escaping (Any)->Void) -> Void in
-          if(call.method == "bill24Sdk") {
-              print("hello from ios")
+          if(call.method == "paymentSdk") {
               let arguments = call.arguments as! Array<String>
               let controller : FlutterViewController = self!.window?.rootViewController as! FlutterViewController
                     
