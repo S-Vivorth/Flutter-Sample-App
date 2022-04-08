@@ -68,8 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
     "language": "km",
     "order_items": [
     {
-    "consumer_code": "001",
-    "amount": 10
+      "amount": 20,
+      "consumer_code": "001",
+      "consumer_name": "ដេវីដ ចន",
+      "consumer_name_latin": "David John"
     }
     ],
     "payment_success_url": "/payment/success",
