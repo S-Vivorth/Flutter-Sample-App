@@ -96,8 +96,10 @@ In dart file (same for iOS):
     "language": "km",
     "order_items": [
     {
-    "item_ref": "001",
-    "amount": 10
+    "amount": 20,
+    "consumer_code": "001",
+    "consumer_name": "ដេវីដ ចន",
+    "consumer_name_latin": "David John"
     }
     ],
     "payment_success_url": "/payment/success",
