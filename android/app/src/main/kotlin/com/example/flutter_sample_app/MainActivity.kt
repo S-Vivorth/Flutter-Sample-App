@@ -14,9 +14,6 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 class MainActivity: FlutterFragmentActivity() {
     private val CHANNEL = "paymentSdk"
     private lateinit var channel: MethodChannel
-    lateinit var sessionId:String
-    val token:String = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQYXltZW50R2F0ZXdheSIsInN1YiI6IkVEQyIsImhhc2giOiJCQ0ZEQzE1MC0zMjRGLTQzRjQtQkQ3Qi0zMTVGN0Y5NDM3NDAifQ.OZ9AqnbRucNmVlJzQt6kqkRjDDDPjMAN81caYwqKuX4"
-    val url:String = "http://203.217.169.102:50209"
     val clientId:String = "fmDJiZyehRgEbBJTkXc7AQ=="
     // environment must be either "uat" or "prod" only
     val environment:String = "uat"
@@ -27,13 +24,15 @@ class MainActivity: FlutterFragmentActivity() {
         channel.setMethodCallHandler { call, result ->
 
             if(call.method == "paymentSdk") {
-                    var arguments = call.arguments as ArrayList<String>
-
+                    val arguments = call.arguments as Map<String, String>
+                    val sessionId: String = arguments["session_id"].toString()
+                    val language: String = arguments["language"].toString()
+                    val theme_mode: String = arguments["theme_mode"].toString()
                     val paymentSdk = paymentSdk(supportFragmentManager = supportFragmentManager,
-                        sessionId = arguments[0],
+                        sessionId = sessionId,
                         clientID = clientId, activity = this
-                        ,payment_succeeded = FlutterActivity(),language = arguments[1],continue_shopping =  FlutterActivity()
-                        ,environment = environment){
+                        ,payment_succeeded = FlutterActivity(),language = language,continue_shopping =  FlutterActivity()
+                        ,environment = environment,theme_mode = theme_mode){
 
                         result.success(Arrays.toString(it as Array<out Any>))
                     }
@@ -43,7 +42,4 @@ class MainActivity: FlutterFragmentActivity() {
             }
         }
     }
-
-
-
 }

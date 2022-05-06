@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const platform = const MethodChannel('paymentSdk');
   TextEditingController orderRefController = new TextEditingController();
   var language = "en";
+  var theme_mode = ""; // can be either "dark" or ""
   var switchValue = false;
 
   Future<dynamic> getSessionId() async {
@@ -49,46 +50,47 @@ class _MyHomePageState extends State<MyHomePage> {
       "Authorization":
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQYXltZW50R2F0ZXdheSIsInN1YiI6IkVEQyIsImhhc2giOiJCQ0ZEQzE1MC0zMjRGLTQzRjQtQkQ3Qi0zMTVGN0Y5NDM3NDAifQ.OZ9AqnbRucNmVlJzQt6kqkRjDDDPjMAN81caYwqKuX4",
     };
-    var payload =
-    {
-    "customer": {
-    "customer_ref": "C00001",
-    "customer_email": "example@gmail.com",
-    "customer_phone": "010801252",
-    "customer_name": "test customer"
-    },
-    "billing_address": {
-    "province": "Phnom Penh",
-    "country": "Cambodia",
-    "address_line_2": "string",
-    "postal_code": "12000",
-    "address_line_1": "No.01, St.01, Toul Kork"
-    },
-    "description": "Extra note",
-    "language": "km",
-    "order_items": [
-    {
-      "amount": 20,
-      "consumer_code": "001",
-      "consumer_name": "ដេវីដ ចន",
-      "consumer_name_latin": "David John"
-    }
-    ],
-    "payment_success_url": "/payment/success",
-    "currency": "USD",
-    "amount": 1,
-    "pay_later_url": "/payment/paylater",
-    "shipping_address": {
-    "province": "Phnom Penh",
-    "country": "Cambodia",
-    "address_line_2": "string",
-    "postal_code": "12000",
-    "address_line_1": "No.01, St.01, Toul Kork"
-    },
-    "order_ref":"${orderRefController.text}",
-    "payment_fail_url": "payment/fail",
-    "payment_cancel_url": "payment/cancel",
-    "continue_shopping_url": "http://localhost:8090/order"
+    var payload = {
+      "customer": {
+        "customer_ref": "C00001",
+        "customer_email": "example@gmail.com",
+        "customer_phone": "010801252",
+        "customer_name": "test customer"
+      },
+      "billing_address": {
+        "province": "Phnom Penh",
+        "country": "Cambodia",
+        "address_line_2": "string",
+        "postal_code": "12000",
+        "address_line_1": "No.01, St.01, Toul Kork"
+      },
+      "description": "Extra note",
+      "language": "km",
+      "order_items": [
+        {
+          "amount": 1,
+          "consumer_code": "001",
+          "consumer_name": "ដេវីដ ចន",
+          "consumer_name_latin": "David John",
+          "company_name": "EDC Phnom Penh",
+          "company_code": "EDCPP"
+        }
+      ],
+      "payment_success_url": "/payment/success",
+      "currency": "USD",
+      "amount": 1,
+      "pay_later_url": "/payment/paylater",
+      "shipping_address": {
+        "province": "Phnom Penh",
+        "country": "Cambodia",
+        "address_line_2": "string",
+        "postal_code": "12000",
+        "address_line_1": "No.01, St.01, Toul Kork"
+      },
+      "order_ref": "${orderRefController.text}",
+      "payment_fail_url": "payment/fail",
+      "payment_cancel_url": "payment/cancel",
+      "continue_shopping_url": "http://localhost:8090/order"
     };
     final response = await http.post(Uri.parse(url + "/order/create/v1"),
         body: json.encoder.convert(payload), headers: mainheader);
@@ -97,28 +99,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void callSdk() async {
     var value;
-    List<String> arguments = [];
+    Map<String, String> arguments = {"session_id": "", "language": "en", "theme_mode": ""};
     try {
       getSessionId().then((result) async {
         if (result["code"] == "000") {
+          arguments["session_id"] = result["data"]["session_id"];
+
           if (switchValue == true) {
             language = "kh";
-            arguments.add(result["data"]["session_id"]);
-            arguments.add(language);
-          }
-          else{
+            theme_mode = "dark";
+            arguments["language"] = language;
+            arguments["theme_mode"] = theme_mode;
+          } else {
             language = "en";
-            arguments.add(result["data"]["session_id"]);
-            arguments.add(language);
+            theme_mode = "";
+            arguments["language"] = language;
+            arguments["theme_mode"] = theme_mode;
           }
-          value = await platform.invokeMethod(
-              "paymentSdk", arguments);
+          value = await platform.invokeMethod("paymentSdk", arguments);
           if (value.isNotEmpty) {
             var tranData;
-            if(Platform.isAndroid) {
+            if (Platform.isAndroid) {
               tranData = (json.decode(value))[0]["tran_data"];
-            }
-            else{
+            } else {
               tranData = value["tran_data"];
             }
             if (tranData["status"].toString() == "0") {
@@ -131,8 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           tranData["bank_ref"].toString(),
                           tranData["trans_id"].toString(),
                           tranData["status"].toString())));
-            }
-            else{
+            } else {
               // do your stuff here when payment is failed
               print("There was a problem during payment.");
             }
@@ -141,17 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
           return;
         }
       });
-
     } catch (e) {
       print(e);
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Container(

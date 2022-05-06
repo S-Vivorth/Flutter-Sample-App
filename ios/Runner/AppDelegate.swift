@@ -2,12 +2,19 @@ import UIKit
 import Flutter
 import bill24Sdk
 import Alamofire
+import Starscream
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
+    enum NetworkError: Error {
+        case unauthorised
+        case timeout
+        case serverError
+        case invalidResponse
+    }
     var orderRef:String!
     
     // language must be either "en" or "kh" only
-    var language:String = "kh"
+    
     
     // environment must be either "uat" or "prod" only
     let environment:String = "uat"
@@ -18,6 +25,7 @@ import Alamofire
     // this url can be obtained from bill24
     let url:String = "http://203.217.169.102:50209"
     let token:String = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQYXltZW50R2F0ZXdheSIsInN1YiI6IkVEQyIsImhhc2giOiJCQ0ZEQzE1MC0zMjRGLTQzRjQtQkQ3Qi0zMTVGN0Y5NDM3NDAifQ.OZ9AqnbRucNmVlJzQt6kqkRjDDDPjMAN81caYwqKuX4"
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -28,11 +36,14 @@ import Alamofire
       channel.setMethodCallHandler({
           [weak self] (call: FlutterMethodCall, results: @escaping (Any)->Void) -> Void in
           if(call.method == "paymentSdk") {
-              let arguments = call.arguments as! Array<String>
+              let arguments = call.arguments as! [String: String]
+              let sessionID : String? = arguments["session_id"]
+              let language : String? = arguments["language"]
+              let theme_mode: String? = arguments["theme_mode"]
               let controller : FlutterViewController = self!.window?.rootViewController as! FlutterViewController
                     
                     self?.window.rootViewController?.dismiss(animated: true, completion: {
-                        BottomSheetAnimation().openSdk(controller: controller,sessionID: arguments[0], cliendID: self!.clientId,language: arguments[1],environment: self!.environment){order_details in
+                        paymentSdk().openSdk(controller: controller,sessionID: sessionID ?? "", cliendID: self!.clientId,language: language ?? "en",environment: self!.environment, theme_mode: theme_mode ?? ""){order_details in
                       
                       results(order_details)
                         
@@ -49,6 +60,8 @@ import Alamofire
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
    
+    
+    
     func initSuccess(dict:[String:Any])
     {
            }
@@ -66,4 +79,6 @@ import Alamofire
         }
         return nil
     }
+
+    
 }
