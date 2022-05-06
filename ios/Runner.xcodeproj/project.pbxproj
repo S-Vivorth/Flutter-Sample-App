@@ -14,8 +14,8 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		B11A074F28251758003B7241 /* bill24Sdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11A074D28251753003B7241 /* bill24Sdk.xcframework */; };
-		B11A075028251758003B7241 /* bill24Sdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B11A074D28251753003B7241 /* bill24Sdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B11A076328252099003B7241 /* bill24PaymentSdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11A07612825208E003B7241 /* bill24PaymentSdk.xcframework */; };
+		B11A076428252099003B7241 /* bill24PaymentSdk.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B11A07612825208E003B7241 /* bill24PaymentSdk.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,7 +25,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B11A075028251758003B7241 /* bill24Sdk.xcframework in Embed Frameworks */,
+				B11A076428252099003B7241 /* bill24PaymentSdk.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,7 +48,7 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9ECAA0FF432D1E88180646A4 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		B115B6F527EC5C9F00E71357 /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B11A074D28251753003B7241 /* bill24Sdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = bill24Sdk.xcframework; sourceTree = "<group>"; };
+		B11A07612825208E003B7241 /* bill24PaymentSdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = bill24PaymentSdk.xcframework; sourceTree = "<group>"; };
 		CF7D675D9DDF30762DEC6BE8 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		DE10AE8E1A0E5181D6397FEA /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,8 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B11A076328252099003B7241 /* bill24PaymentSdk.xcframework in Frameworks */,
 				4630A5E5922FC8A62A82F416 /* Pods_Runner.framework in Frameworks */,
-				B11A074F28251758003B7241 /* bill24Sdk.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
-				B11A074D28251753003B7241 /* bill24Sdk.xcframework */,
+				B11A07612825208E003B7241 /* bill24PaymentSdk.xcframework */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				1058AD0ECDC647809A87C516 /* Pods */,
